@@ -40,11 +40,11 @@ class BingTranslator(object):
             pass
         return text
 
-    def getText(self, xml):
+    def get_text(self, xml):
         text = re.sub(r"<.+?>", " ", xml).strip()
         return text
 
-    def getTranslation(self, text, src, tgt, reinit_token = False):
+    def get_translation(self, text, src, tgt, reinit_token = False):
         token = self.token_obj.getToken(reinit_token)
         headers = {'Authorization':'bearer %s' % token}
         conn = httplib.HTTPConnection('api.microsofttranslator.com')
@@ -55,10 +55,10 @@ class BingTranslator(object):
         addr = '/V2/Http.svc/Translate?' + urllib.urlencode(dic)
         conn.request("GET", addr, headers=headers)
         xml = conn.getresponse().read()
-        return self.getText(xml)
+        return self.get_text(xml)
 
 if __name__ == "__main__":
     client_id = ""
     client_secret = ""
     translator = BingTranslator (client_id, client_secret)
-    print translator.getTranslation ("""We can read of things that happened 5,000 years ago in the Near East.""", "en", "de")
+    print translator.get_translation ("""We can read of things that happened 5,000 years ago in the Near East.""", "en", "de")
